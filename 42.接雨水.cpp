@@ -12,20 +12,11 @@ public:
         int n=height.size();
         if(n<=2) return 0;
 
-
-        vector<int> water={0}; // 每一列的水量
-
-        for(int i=0;i<n;i++){
-            water.push_back(0);
-        }
-
-        
-
+    
         int i=0,j=n-1;
         int left=height[i],right=height[j]; // 两边最高
 
-        int low=0;
-
+        int ans = 0;
         do{
 
 
@@ -37,9 +28,9 @@ public:
                 // 左指针移动的情况
                 if(x>=left){
                     left = x;
-                    water[i] = 0; //覆盖
+                     //覆盖
                 }else{
-                    water[i] = left-x;// 有空隙
+                    ans += left-x;// 有空隙
                 }
 
             }else{
@@ -48,9 +39,8 @@ public:
                 // 右指针移动的情况
                 if(x>=right){
                     right = x;
-                    water[j] = 0; //覆盖
                 }else{
-                    water[j] = right-x;// 有空隙
+                    ans += right-x;// 有空隙
                 }
                 
             }
@@ -59,10 +49,7 @@ public:
 
         }while(i<j);
 
-        
-        return accumulate(water.begin(),water.end(),0);
-
-
+        return ans;
     }
 };
 // @lc code=end
