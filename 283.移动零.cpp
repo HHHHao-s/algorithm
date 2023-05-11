@@ -1,4 +1,4 @@
-#include "common.h"
+#include "s.h"
 /*
  * @lc app=leetcode.cn id=283 lang=cpp
  *
