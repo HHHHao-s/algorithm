@@ -25,7 +25,7 @@ public:
         }
 
 
-        for(int l=0,r=0;r<np;r++){
+        for(int l=0,r=0;r<ns;r++){
             cnt[s[r]-'a']--;
             while(cnt[s[r]-'a']<0){
                 cnt[s[l]-'a']++;
