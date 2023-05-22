@@ -5,7 +5,8 @@
 R 回看
 
 ----------
-## 142.环形链表-ii
+## [142.环形链表-ii](https://leetcode.cn/problems/linked-list-cycle-ii/?envType=study-plan-v2&envId=top-100-liked)
+
 ![](./res/142.环形链表-ii.png)
 
 设pfast走过2n，则pslow走过n
