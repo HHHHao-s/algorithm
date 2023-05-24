@@ -75,3 +75,21 @@ public:
         random = NULL;
     }
 };
+
+ListNode * genList(vector<int>testcase){ // 根据testcase生成链表
+    ListNode *head = new ListNode(testcase[0]),*p=head;
+    int n = testcase.size();
+    for(int i=1;i<n;i++){
+        p->next = new ListNode(testcase[i]);
+        p = p->next;
+    }
+    return head;
+}
+
+void printList(ListNode *head){
+    while(head){
+        cout << head->val << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
