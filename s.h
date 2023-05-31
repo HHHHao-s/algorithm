@@ -31,7 +31,7 @@
 #include <utility>
 #include <valarray>
 #include <vector>
- 
+
 #if __cplusplus >= 201103L
 #include <array>
 #include <atomic>
@@ -56,40 +56,57 @@
 
 using namespace std;
 
-struct ListNode {
+struct ListNode
+{
     int val;
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
-    ListNode(int x, ListNode *_next) : val(x), next(_next){}
+    ListNode(int x, ListNode *_next) : val(x), next(_next) {}
 };
 
-class Node {
+class Node
+{
 public:
     int val;
-    Node* next;
-    Node* random;
-    
-    Node(int _val) {
+    Node *next;
+    Node *random;
+
+    Node(int _val)
+    {
         val = _val;
         next = NULL;
         random = NULL;
     }
 };
 
-ListNode * genList(vector<int>testcase){ // 根据testcase生成链表
-    ListNode *head = new ListNode(testcase[0]),*p=head;
+ListNode *genList(vector<int> testcase)
+{ // 根据testcase生成链表
+    ListNode *head = new ListNode(testcase[0]), *p = head;
     int n = testcase.size();
-    for(int i=1;i<n;i++){
+    for (int i = 1; i < n; i++)
+    {
         p->next = new ListNode(testcase[i]);
         p = p->next;
     }
     return head;
 }
 
-void printList(ListNode *head){
-    while(head){
+void printList(ListNode *head)
+{
+    while (head)
+    {
         cout << head->val << " ";
         head = head->next;
     }
     cout << endl;
 }
+
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
