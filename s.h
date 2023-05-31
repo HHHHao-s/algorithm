@@ -56,6 +56,8 @@
 
 using namespace std;
 
+#define null INT64_MIN
+
 struct ListNode
 {
     int val;
@@ -110,3 +112,58 @@ struct TreeNode
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
+
+
+TreeNode *genTree(vector<long long> testcase){
+    if(testcase.size()==0) return nullptr;
+
+    TreeNode *head = new TreeNode(testcase[0]);
+
+    queue<TreeNode *> q;
+    q.push(head);
+
+    int index=1;
+    int n=testcase.size();
+    while(index < n){
+
+        TreeNode *p = q.front();
+        q.pop();
+        
+        long long tmp=testcase[index++];
+        if(tmp!=null){
+            p->left = new TreeNode(tmp);
+            q.push(p->left);
+
+        }
+        tmp=testcase[index++];
+        if(tmp!=null){
+            p->right = new TreeNode(tmp);
+            q.push(p->right);
+
+        }
+        
+        
+    }
+
+    return head;
+}
+
+
+void printTree(TreeNode *root){
+
+    queue<TreeNode *> q;
+    q.push(root);
+    while(!q.empty()){
+        TreeNode *p = q.front();
+        q.pop();
+        if(p==nullptr){
+            cout << "null ";
+            continue;
+        }
+        cout << p->val << " ";
+        q.push(p->left);
+        q.push(p->right);
+    }
+    cout << endl;
+
+}
