@@ -113,57 +113,74 @@ struct TreeNode
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-
-TreeNode *genTree(vector<long long> testcase){
-    if(testcase.size()==0) return nullptr;
+TreeNode *genTree(vector<long long> testcase)
+{
+    if (testcase.size() == 0)
+        return nullptr;
 
     TreeNode *head = new TreeNode(testcase[0]);
 
     queue<TreeNode *> q;
     q.push(head);
 
-    int index=1;
-    int n=testcase.size();
-    while(index < n){
+    int index = 1;
+    int n = testcase.size();
+    while (index < n)
+    {
 
         TreeNode *p = q.front();
         q.pop();
-        
-        long long tmp=testcase[index++];
-        if(tmp!=null){
+
+        long long tmp = testcase[index++];
+        if (tmp != null)
+        {
             p->left = new TreeNode(tmp);
             q.push(p->left);
-
         }
-        tmp=testcase[index++];
-        if(tmp!=null){
+        tmp = testcase[index++];
+        if (tmp != null)
+        {
             p->right = new TreeNode(tmp);
             q.push(p->right);
-
         }
-        
-        
     }
 
     return head;
 }
 
-
-void printTree(TreeNode *root){
+void printTree(TreeNode *root)
+{
 
     queue<TreeNode *> q;
+    int nulls=0;
     q.push(root);
-    while(!q.empty()){
-        TreeNode *p = q.front();
-        q.pop();
-        if(p==nullptr){
-            cout << "null ";
-            continue;
+    while (!q.empty())
+    {
+        int currentLevelSize = q.size();
+
+        for (int i = 1; i <= currentLevelSize; ++i)
+        {
+            
+            auto node = q.front();
+            q.pop();
+            if (node != nullptr)
+            {
+                if(nulls!=0){
+                    for(int i=0;i<nulls;i++){
+                        cout << "null ";
+                    }
+                    nulls=0;
+                }
+                cout << node->val << ' ';
+                q.push(node->left);
+                q.push(node->right);
+                
+            }
+            else
+            {
+                nulls++;
+            }
         }
-        cout << p->val << " ";
-        q.push(p->left);
-        q.push(p->right);
     }
     cout << endl;
-
 }
