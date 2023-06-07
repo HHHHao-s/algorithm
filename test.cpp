@@ -1,106 +1,48 @@
-#include <iostream>
-#include <memory>
+#include "s.h"
 
-using std::cout;
-using std::endl;
-
-class A {
+class Base{
 public:
-	A() {
-		cout << "A的构造函数\n";
-	}
-	A(const A& a) {
+	Base() = default;
 
-		cout << "A的复制构造函数\n";
-		
+	Base(Base & other){
+		cout << "Base 的拷贝构造函数" << endl;
 	}
-	A(A&& a) {
-		cout << "A的移动构造函数\n";
-	}
-	~A() {
-		cout << "A的析构函数\n";
-	}
-};
 
-class B
-{
-public:
-	B() : pa_(std::make_shared<A>()) {
-		cout << "B的默认构造函数\n";
+	virtual void print(){
+		cout << "Base::print" << endl;
 	}
-	B(const B& b) {
-		cout << "B的复制构造函数\n";
-		cout << "before" << endl;
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		cout << "b.pa_.use_count()=" << b.pa_.use_count() << endl;
-		cout << "b.pa_.get()=" << b.pa_.get() << endl;
-		//pa_ = b.pa_; // 会分享同一份内存
-		pa_ = std::make_shared<A>(*b.pa_);	
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		cout << "b.pa_.use_count()=" << b.pa_.use_count() << endl;
-		cout << "b.pa_.get()=" << b.pa_.get() << endl;
-		
-	}
-	B(B&& b) noexcept{
-		cout << "B的移动构造函数\n";
-		cout << "before" << endl;
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		cout << "b.pa_.use_count()=" << b.pa_.use_count() << endl;
-		cout << "b.pa_.get()=" << b.pa_.get() << endl;
-		cout << "after" << endl;
-		pa_ = std::move(b.pa_);
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		cout << "b.pa_.use_count()=" << b.pa_.use_count() << endl;
-		cout << "b.pa_.get()=" << b.pa_.get() << endl;
-		
-	}
-	B& operator=(B&& b) noexcept { // 若值传递，会调用拷贝构造函数
-		cout << "B的移动赋值函数\n";
-		cout << "before" << endl;
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		cout << "b.pa_.use_count()=" << b.pa_.use_count() << endl;
-		cout << "b.pa_.get()=" << b.pa_.get() << endl;
-		pa_ = std::move(b.pa_);
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		cout << "b.pa_.use_count()=" << b.pa_.use_count() << endl;
-		cout << "b.pa_.get()=" << b.pa_.get() << endl;
-		
-		return *this;
-	}
-	~B() {
-		cout << "B的析构函数\n";
-		cout << "this->pa_.use_count()=" << pa_.use_count() << endl;
-		cout << "this->pa_.get()=" << pa_.get() << endl;
-		
-	}
-	void getPa_() {
 
-		cout << "this->pa_.get()" << this->pa_.get() << endl;
-	}
 private:
-	std::shared_ptr<A> pa_;
+
+};
+
+class Derived : public Base{
+public:
+
+	Derived() = default;
+
+	Derived(Derived & other){
+		cout << "Derived 的拷贝构造函数" << endl;
+	}
+
+	Derived(int a__): a(a__){
+		cout << "Derived 的int a构造函数" << endl;
+	}
+
+	virtual void print(){
+		cout << "Derived::print" << endl;
+	}
+
+
+	int a{0};
 };
 
 
-B& getB() {
-	B ret{};
-	return ret;
+int main(){
 
-}
-
-
-int main() {
-
-	B b1 = getB();
-	B b2{};
-	(b2 = std::move(b1)).getPa_();
-	
-	system("pause");
+	Base *b1 = new Derived(123);
+	Base *b2 = new Base(*b1);
+	Derived *d = dynamic_cast<Derived*>(b2);
+	cout << d->a;
 	return 0;
 }
