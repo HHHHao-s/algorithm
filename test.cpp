@@ -1,48 +1,29 @@
 #include "s.h"
 
-class Base{
-public:
-	Base() = default;
-
-	Base(Base & other){
-		cout << "Base 的拷贝构造函数" << endl;
-	}
-
-	virtual void print(){
-		cout << "Base::print" << endl;
-	}
-
-private:
-
-};
-
-class Derived : public Base{
+class Test{
 public:
 
-	Derived() = default;
+	void insert(){
+		for(int i=0;i<1024;i++){
+			array_[i] = {i,1024-i};
+		}
 
-	Derived(Derived & other){
-		cout << "Derived 的拷贝构造函数" << endl;
 	}
 
-	Derived(int a__): a(a__){
-		cout << "Derived 的int a构造函数" << endl;
-	}
-
-	virtual void print(){
-		cout << "Derived::print" << endl;
-	}
-
-
-	int a{0};
+	std::pair<int,int> array_[1024];
 };
+
 
 
 int main(){
 
-	Base *b1 = new Derived(123);
-	Base *b2 = new Base(*b1);
-	Derived *d = dynamic_cast<Derived*>(b2);
-	cout << d->a;
+	Test t;
+	t.insert();
+	auto out = upper_bound(&t.array_[0],&t.array_[1024], 300, []( const int &lhs,const std::pair<int,int> &rhs) -> bool{
+		return lhs<rhs.first;
+		
+	});
+
+	cout<<out->first << " "<< out->second;
 	return 0;
 }
