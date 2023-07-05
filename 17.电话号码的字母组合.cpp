@@ -25,46 +25,54 @@ public:
 
 
     vector<string> letterCombinations(string digits){
-
-        vector<string> ans;
-
         
-
+        vector<string> ans;
+        if(digits.size()==0) return ans;
         int p=0;
         int n = digits.size();
         int cursor[5] = {0};
-        string cur;
-
+        char cur[5]={0};
+        int cur_size = 0;
         while(1){
 
-            if(cursor[p]<strlen(n2w[digits[p]]))
-                cur = cur + n2w[digits[p]][cursor[p]];
-            else{ // roll back
-                cur = cur.erase(cur.size()-1); 
+            if(cursor[p]<strlen(n2w[digits[p]-'0'])){
+                
+                cur[cur_size++] = n2w[digits[p]-'0'][cursor[p]];
+                cur[cur_size] = 0;
+
+            }else{ // roll back
+                
                 cursor[p]=0;
                 p--;
+                if(p<0){
+                    break;// terminate
+                }
+                cur_size--;
                 cursor[p]++;
-                
-            }
-            
-            if(p==n-1){// 
+                continue;
+
+            }          
+            if(p==n-1){
                 ans.push_back(cur);                
-                cur = cur.erase(cur.size()-1);                
+                cur_size--;              
                 cursor[p]++;
-                
-
-            }else{
-                
-                p++;
-                
+            }else{              
+                p++;             
             }
-            
-
-            
+                  
         }
-
-
+        return ans;
     }
 };
 // @lc code=end
+int main(){
 
+    Solution s;
+    string in = "23";
+    cout << in;
+    for(auto it:s.letterCombinations(in)){
+        cout<< it <<" ";
+    }
+
+    return 0;
+}

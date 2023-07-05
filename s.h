@@ -184,3 +184,46 @@ void printTree(TreeNode *root)
     }
     cout << endl;
 }
+
+void print2d(const vector<vector<int>> nums){
+    cout<<"[";
+    
+    if(nums.size()>0){
+        cout<<"[";
+        if(nums[0].size()>0){
+            cout << nums[0][0];
+        }
+        
+        for(int j=1; j<nums[0].size(); j++){
+            cout << ","<< nums[0][j];
+        }
+        cout << "]";
+    }
+    
+
+    for(int i=1; i<nums.size(); i++){
+        cout<<",[";
+        if(nums[i].size()>0){
+            cout << nums[i][0];
+        }
+        
+        for(int j=1; j<nums[i].size(); j++){
+            cout << ","<< nums[i][j];
+        }
+        cout << "]";
+    }
+    cout <<"]";
+}
+
+void printArr(vector<int> arr){
+    cout << "[";
+    if(arr.size()>0){
+        cout << arr[0];
+    }
+    
+    for(int j=1; j<arr.size(); j++){
+        cout << ","<< arr[j];
+    }
+    cout << "]";
+    
+}
