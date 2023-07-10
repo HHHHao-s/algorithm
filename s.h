@@ -185,7 +185,8 @@ void printTree(TreeNode *root)
     cout << endl;
 }
 
-void print2d(const vector<vector<int>> nums){
+template<typename T>
+void print2d(const vector<vector<T>> nums){
     cout<<"[";
     
     if(nums.size()>0){
@@ -215,7 +216,8 @@ void print2d(const vector<vector<int>> nums){
     cout <<"]";
 }
 
-void printArr(vector<int> arr){
+template<typename T>
+void printArr(vector<T> arr){
     cout << "[";
     if(arr.size()>0){
         cout << arr[0];

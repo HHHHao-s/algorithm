@@ -1,29 +1,39 @@
-#include "s.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <random>
 
-class Test{
-public:
+using namespace std;
 
-	void insert(){
-		for(int i=0;i<1024;i++){
-			array_[i] = {i,1024-i};
-		}
+int main() {
+    // 随机生成地图元素
+    vector<string> element_names = {"BRICK", "GRASS", "RIVER", "IRON"};
+    vector<pair<int, int>> positions;
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis_x(0, 680);
+    uniform_int_distribution<> dis_y(0, 480);
+    for (int i = 0; i < 100; i++) {
+        positions.push_back(make_pair(dis_x(gen), dis_y(gen)));
+    }
 
-	}
+    // 将地图元素写入文件
+    ofstream outfile("map.txt");
+    for (auto& name : element_names) {
+        outfile << name << "=";
+        bool first = true;
+        for (auto& pos : positions) {
+            if (dis_x(gen) < 50) {  // 50% 的概率将该元素放入该位置
+                if (!first) {
+                    outfile << ";";
+                }
+                outfile << pos.first << "," << pos.second;
+                first = false;
+            }
+        }
+        outfile << endl;
+    }
+    outfile.close();
 
-	std::pair<int,int> array_[1024];
-};
-
-
-
-int main(){
-
-	Test t;
-	t.insert();
-	auto out = upper_bound(&t.array_[0],&t.array_[1024], 300, []( const int &lhs,const std::pair<int,int> &rhs) -> bool{
-		return lhs<rhs.first;
-		
-	});
-
-	cout<<out->first << " "<< out->second;
-	return 0;
+    return 0;
 }
