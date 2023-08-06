@@ -14,21 +14,51 @@ public:
         if(n==1){
             return false;
         }
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        if(sum%2 == 1){
+        int sum=0,max_num=0;
+        for(int i=0;i<n;i++){
+            int x = nums[i];
+            sum+=x;
+            max_num = max(max_num,x);
+        }
+        if(sum&1){
+            return false;
+        }
+        int target = sum/2;
+        if(max_num>target){
             return false;
         }
 
-        int target = sum/2;
-        vector<int> dp(target+1,0);
-        dp[0] =1;
-        for(int i=1;i<=target;i++){
-            for(int j=0;j<n;j++){
-                if(dp[i-nums[j]]==1){
-                    dp[i] = 1;
-                }
+        
+        // vector<vector<bool>> dp(n+1, vector<bool>(target+1,false));
+
+        // for(int i=0;i<=n;i++){
+        //     dp[i][0] = true;
+        // }
+
+        // for(int i=1;i<=n;i++){
+        //     int x = nums[i-1];
+        //     for(int j=1;j<=target;j++){
+        //         if(j-x>=0){
+        //             dp[i][j] = dp[i-1][j-x] | dp[i-1][j];
+        //         }else{
+        //             dp[i][j] = dp[i-1][j];
+        //         }
+        //     }
+        // }
+
+        // return dp[n][target];
+
+        vector<bool> dp(target+1, false);
+
+        dp[0] = true;
+
+        for(int i = 0;i<n;i++){
+            int x = nums[i];
+            for(int j=target+1;j-->x;){
+                dp[j] = dp[j-x] || dp[j];
             }
         }
+
         return dp[target];
     }
 };
@@ -37,7 +67,7 @@ public:
 int main(){
 
     Solution s;
-    cout << s.canPartition({1,2,5});
+    cout << s.canPartition({1,5,11,5});
 
     return 0;
 }
