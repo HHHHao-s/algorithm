@@ -8,8 +8,8 @@
 // @lc code=start
 class Solution {
 public:
-    int findDuplicate(vector<int>& nums) {
-        int n=nums.size();
+    int findDuplicate(const vector<int>& nums) {
+        int n = nums.size();
         int l = 1;
         int r = n-1;
         int ans = -1;
@@ -21,11 +21,11 @@ public:
                     cnt++;
                 }
             }
-            if(cnt>center){// 在小端
+            if(cnt<=center){
+                l = center+1;
+            }else{
                 r = center-1;
                 ans = center;
-            }else{
-                l = center+1;
             }
         }
         return ans;
@@ -33,3 +33,10 @@ public:
 };
 // @lc code=end
 
+int main(){
+
+    Solution s;
+    cout << s.findDuplicate({1,3,4,2,2});
+
+    return 0;
+}

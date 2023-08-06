@@ -23,7 +23,6 @@ public:
 
     int rob(const vector<int>& nums) {
         
-
         int n = nums.size();
         if(n==1){
             return nums[0];
@@ -31,10 +30,10 @@ public:
             return max(nums[0],nums[1]);
         }
 
-        int a=0,b=nums[0];
+        int a=0,b=nums[0];// a为不选，b为选
 
-        for(int i=1; i<n;i++){
-            int tmp =  a+nums[i];
+        for(int i=1; i<n; i++){
+            int tmp = a+nums[i];
             a = max(a,b);
             b = tmp;         
         }

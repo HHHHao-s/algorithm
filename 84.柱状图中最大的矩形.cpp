@@ -8,34 +8,47 @@
 // @lc code=start
 class Solution {
 private:
-    int myLargestRectangleArea(vector<int>& heights){
-        stack<int> st;
-        int max_size = 0;
-        int n = heights.size();
-        st.push(0);
-        for(int i=0;i<n;i++){
-            
-            int x = heights[i];
-            int size=x;
-            while(x<=st.top()){
-                size+=x;
-                st.pop(); 
-            }
-            st.push(x);
-            max_size  = max(max_size, size);
-        }
-        
-        return max_size;
-    }
 
 public:
     
     int largestRectangleArea(vector<int>& heights) {
-        int l = myLargestRectangleArea(heights);
-        reverse(heights.begin(), heights.end());
-        int r = myLargestRectangleArea(heights);
         
-        return max(l,r);
+        int n = heights.size();
+
+        stack<int> st;
+
+        vector<int> left(n),right(n);
+
+        for(int i=0;i<n;i++){
+            int x = heights[i];
+            while(!st.empty()&&x<=heights[st.top()]){
+                st.pop();
+            }
+            left[i] = st.empty()?-1:st.top();
+            st.push(i);
+        }
+
+
+        st = stack<int>();
+
+        for(int i=n;i-->0;){
+            int x = heights[i];
+            while(!st.empty()&&x<=heights[st.top()]){
+                st.pop();
+            }
+            right[i] = st.empty()?n:st.top();
+            st.push(i);
+        }
+
+        int ans=0;
+        for(int i=0;i<n;i++){
+
+            int h = heights[i];
+            ans = max(ans, (right[i]-left[i]-1)*h);
+
+        }
+        return ans;
+
     }
 };
 // @lc code=end
@@ -44,7 +57,7 @@ int main(){
 
     Solution s;
 
-    vector<int> h = {1,1};
+    vector<int> h = {1,1,1,1,1,1,1};
 
     cout << s.largestRectangleArea(h);
 
