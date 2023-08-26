@@ -16,7 +16,7 @@ public:
 
     int n;
 
-    void tarjan(int cur, int fa){
+    void tarjan(int cur, int fa){// 找环
 
         now++;
         vis[cur] = 1;
@@ -30,12 +30,12 @@ public:
 
             if(!vis[it]){
                 tarjan(it, cur);
-                low[cur] = min(low[it], low[cur]);
-                if(dfn[cur] < low[it]){
+                low[cur] = min(low[it], low[cur]);// 逆回来，设置自己的low为子树的low
+                if(dfn[cur] < low[it]){ // 如果子树没有碰到自己或之前的节点，那么这个路径肯定是关键路径
                     ans.push_back({cur,it});
                 }
             }else{
-                low[cur] = min(low[cur], dfn[it]);
+                low[cur] = min(low[cur], dfn[it]); // 顺向碰到之前访问过的，时间更小的地方，修改自己的low
             }
 
         }
