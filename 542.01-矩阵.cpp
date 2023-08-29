@@ -13,35 +13,43 @@ private:
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
         int m = matrix.size(), n = matrix[0].size();
-        vector<vector<int>> dist(m, vector<int>(n));
-        vector<vector<int>> seen(m, vector<int>(n));
-        queue<pair<int, int>> q;
-        // 将所有的 0 添加进初始队列中
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (matrix[i][j] == 0) {
-                    q.emplace(i, j);
-                    seen[i][j] = 1;
+        vector<vector<int>> ret(m, vector<int>(n));
+        vector<vector<int>> vis(m, vector<int>(n));
+
+        queue<pair<int,int>> q;
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]==0){
+                    ret[i][j]=0;
+                    vis[i][j]=1;
+                    q.push({i,j});
                 }
+                
             }
         }
 
-        // 广度优先搜索
-        while (!q.empty()) {
-            auto [i, j] = q.front();
+        while(!q.empty()){
+            auto [x,y] = q.front();
             q.pop();
-            for (int d = 0; d < 4; ++d) {
-                int ni = i + dirs[d][0];
-                int nj = j + dirs[d][1];
-                if (ni >= 0 && ni < m && nj >= 0 && nj < n && !seen[ni][nj]) {
-                    dist[ni][nj] = dist[i][j] + 1;
-                    q.emplace(ni, nj);
-                    seen[ni][nj] = 1;
+
+            for(int k=0;k<4;k++){
+                int nx = x+dirs[k][0];
+                int ny = y+dirs[k][1];
+
+                if(nx<0 || nx >=m || ny<0 || ny>=n || vis[nx][ny]){
+                    continue;
                 }
+
+                ret[nx][ny] = ret[x][y]+1;
+                vis[nx][ny] = 1;
+                q.push({nx,ny});
             }
+
+
         }
 
-        return dist;
+        return ret;
     }
 };
 // @lc code=end
