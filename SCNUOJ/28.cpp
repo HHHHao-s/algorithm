@@ -20,7 +20,7 @@ int main(){
     int end=0;
     int most_right=0;
 
-    for(int i=0;i<n;i++){
+    for(int i=0;i<n-1;i++){
 
         most_right = max(most_right, arr[i]+i);
         if(i == end){
