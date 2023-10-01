@@ -229,3 +229,15 @@ void printArr(vector<T> arr){
     cout << "]";
     
 }
+
+void generateDotFile(const vector<vector<int>>& adjList, const string& filename) {
+    ofstream fout(filename);
+    fout << "digraph G {" << endl;
+    for (int i = 0; i < adjList.size(); i++) {
+        for (int j = 0; j < adjList[i].size(); j++) {
+            fout << i << " -> " << adjList[i][j] << ";" << endl;
+        }
+    }
+    fout << "}" << endl;
+    fout.close();
+}
