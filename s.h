@@ -113,7 +113,7 @@ struct TreeNode
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-TreeNode *genTree(vector<long long> testcase)
+TreeNode *genTree(const vector<long long> testcase)
 {
     if (testcase.size() == 0)
         return nullptr;
