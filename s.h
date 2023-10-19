@@ -245,6 +245,36 @@ void generateDotFile(const vector<vector<int>>& adjList, const string& filename)
 
 /*
 
+struct UnionFind{
+    UnionFind(size_t n): arr(n){
+        for(int i=0;i<n;i++){
+            arr[i] = {i,1};
+        }
+    }
+
+    int Find(int x){
+        return arr[x].fa==x?x:(arr[x].fa=Find(arr[x].fa));
+    }
+    void Union(int x, int y){
+        int fax = Find(x);
+        int fay = Find(y);
+        if(fax!=fay){
+            arr[fax].cnt += arr[fay].cnt;
+            arr[fay].fa = fax;
+        }
+    }
+    int GetCnt(int x){
+        return arr[Find(x)].cnt;
+    }
+
+    struct Info{
+        int fa,cnt;
+    };
+    vector<Info>  arr;
+};
+
+
+
 template <typename T>
 inline void hash_combine(std::size_t &seed, const T &val) {
     seed ^= std::hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
