@@ -263,7 +263,7 @@ struct UnionFind{
             arr[fay].fa = fax;
         }
     }
-    int GetCnt(int x){
+    int& GetCnt(int x){
         return arr[Find(x)].cnt;
     }
 
