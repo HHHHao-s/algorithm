@@ -1,58 +1,68 @@
 #include "../s.h"
 
+// 树状数组: 动态维护前缀和
+class BIT{
+private:
+    vector<long long> c;
+public:
+    BIT(int n){
+        c = vector<long long>(n+1, INT_MIN);
+    }
+    BIT(set<long long> s){
+        c.push_back(INT_MIN);
+        long long ma = INT_MIN;
+        for(auto x:s){
+            ma = max(ma, x);
+            c.push_back(ma);
+        }
+    }
+    
+    void update(int i, long long z){
+        for(;i>0&&i<c.size();i+=(-i)&i){
+            c[i] = max(c[i],z);
+        }
+    }
+
+    long long pre_max(int i){
+        long long s=INT_MIN;
+        for(;i>0&&i<c.size();i-=(-i)&i){
+            s = max(s, c[i]);
+        }
+        return s;
+    }
+};
 class Solution {
+
+
 public:
     long long maxBalancedSubsequenceSum(vector<int>& nums) {
-        int n = nums.size();        
-        vector<long long> dp1(n+1,0),dp2(n+1,0);
-        
-        map<long long, int> m_pos;
-        bool all_d=1;
-        int max_it = INT_MIN;
-        for(int i =0;i<n;i++){
-            max_it=max(max_it, nums[i]);
+        set<int> s;
+        for(int i=0;i<nums.size();i++){
+            int x = nums[i]-i;
+            s.insert(x);
         }
-        if(max_it <= 0){
-            return max_it;
+        unordered_map<int,int> s2index;
+        int index = 1;
+        for(auto x:s){
+            s2index[x]=index++;
         }
-        dp1[0] = nums[0];
-        dp2[0] = 0;
-        m_pos[nums[0]] = 0;
-
-        for(int i=1;i<n;i++){
-            long long num = nums[i];
-            auto it = m_pos.upper_bound(num);
-            dp1[i] = num;
-            if(it==m_pos.begin()){
-                dp1[i] = num;
-                dp2[i] = max(dp1[i-1],dp2[i-1]);
-            }else{
-                it--;
-                while(1){
-
-                    if(num-it->first>=i-it->second){
-                        dp1[i] = max(dp1[i],num+dp1[it->second]);                        
-                    }
-                    if(it==m_pos.begin()){
-                        break;
-                    }
-                    it--;
-                }
-                
-            }
-            dp2[i] = max(dp1[i-1],dp2[i-1]);
-            
-            m_pos[num] = i;
-
+        BIT b(s.size());
+        long long ans=INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            index = s2index[nums[i]-i];
+            long long new_w = max(b.pre_max(index),0ll) +nums[i];
+            ans = max(new_w,ans);
+            b.update(index, new_w);
         }
-        return max(dp1[n-1],dp2[n-1] );
+        return ans;
+
     }
 };
 
 int main(){
     Solution s;
 
-    vector<int> nums={31,-3,22,28,-49,-38,29,-9,-41,-17,22,-33,-1,-35,44,28,40,28,-37,12,-21,6,36,-36,1,12,27,31,15,-19,46};
+    vector<int> nums={3,3,5,6};
     cout << s.maxBalancedSubsequenceSum(nums);
 
 }
