@@ -153,7 +153,7 @@ void printTree(TreeNode *root)
 {
 
     queue<TreeNode *> q;
-    int nulls=0;
+    int nulls = 0;
     q.push(root);
     while (!q.empty())
     {
@@ -161,21 +161,22 @@ void printTree(TreeNode *root)
 
         for (int i = 1; i <= currentLevelSize; ++i)
         {
-            
+
             auto node = q.front();
             q.pop();
             if (node != nullptr)
             {
-                if(nulls!=0){
-                    for(int i=0;i<nulls;i++){
+                if (nulls != 0)
+                {
+                    for (int i = 0; i < nulls; i++)
+                    {
                         cout << "null ";
                     }
-                    nulls=0;
+                    nulls = 0;
                 }
                 cout << node->val << ' ';
                 q.push(node->left);
                 q.push(node->right);
-                
             }
             else
             {
@@ -186,56 +187,67 @@ void printTree(TreeNode *root)
     cout << endl;
 }
 
-template<typename T>
-void print2d(const vector<vector<T>> nums){
-    cout<<"[";
-    
-    if(nums.size()>0){
-        cout<<"[";
-        if(nums[0].size()>0){
+template <typename T>
+void print2d(const vector<vector<T>> nums)
+{
+    cout << "[";
+
+    if (nums.size() > 0)
+    {
+        cout << "[";
+        if (nums[0].size() > 0)
+        {
             cout << nums[0][0];
         }
-        
-        for(int j=1; j<nums[0].size(); j++){
-            cout << ","<< nums[0][j];
+
+        for (int j = 1; j < nums[0].size(); j++)
+        {
+            cout << "," << nums[0][j];
         }
         cout << "]";
     }
-    
 
-    for(int i=1; i<nums.size(); i++){
-        cout<<",[";
-        if(nums[i].size()>0){
+    for (int i = 1; i < nums.size(); i++)
+    {
+        cout << ",[";
+        if (nums[i].size() > 0)
+        {
             cout << nums[i][0];
         }
-        
-        for(int j=1; j<nums[i].size(); j++){
-            cout << ","<< nums[i][j];
+
+        for (int j = 1; j < nums[i].size(); j++)
+        {
+            cout << "," << nums[i][j];
         }
         cout << "]";
     }
-    cout <<"]";
+    cout << "]";
 }
 
-template<typename T>
-void printArr(vector<T> arr){
+template <typename T>
+void printArr(vector<T> arr)
+{
     cout << "[";
-    if(arr.size()>0){
+    if (arr.size() > 0)
+    {
         cout << arr[0];
     }
-    
-    for(int j=1; j<arr.size(); j++){
-        cout << ","<< arr[j];
+
+    for (int j = 1; j < arr.size(); j++)
+    {
+        cout << "," << arr[j];
     }
     cout << "]";
-    
 }
 
-void generateDotFile(const vector<vector<int>>& adjList, const string& filename) {
+void generateDotFile(const vector<vector<int>> &adjList, const string &filename)
+{
     ofstream fout(filename);
     fout << "digraph G {" << endl;
-    for (int i = 0; i < adjList.size(); i++) {
-        for (int j = 0; j < adjList[i].size(); j++) {
+    for (int i = 0; i < adjList.size(); i++)
+    {
+        for (int j = 0; j < adjList[i].size(); j++)
+        {
             fout << i << " -> " << adjList[i][j] << ";" << endl;
         }
     }
@@ -303,4 +315,40 @@ struct pair_hash {
     }
 };
 
+*/
+
+// 树状数组
+/*
+class BITree{
+public:
+    BITree(const vector<int>& in_nums):nums(in_nums),info(in_nums.size()+1) {
+        for (int i = 1; i <= in_nums.size(); i++) {
+            info[i] += in_nums[i - 1];
+            int nxt = i + (i & -i); // 下一个关键区间的右端点
+            if (nxt <= in_nums.size()) {
+                info[nxt] += info[i];
+            }
+        }
+    }
+    void update(int index, int val){
+        int delta = val-nums[index];
+        nums[index] = val;
+        index++;
+        for(;index<info.size();index += (index&(-index))){
+            info[index] += delta;
+        
+    }
+    int query(int index){
+        int ret =0;
+        index++;
+        for(;index>0;index-=(index&(-index))){
+            ret += info[index];
+        }
+        return ret;
+    }
+private:
+    vector<int> nums;
+    vector<int> info;
+    int n;
+};
 */
