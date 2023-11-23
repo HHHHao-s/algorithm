@@ -7,55 +7,49 @@
 
 // @lc code=start
 class Solution {
-public:
+private:
+    struct Status{
+        int l, r, whole, mx;
+    };
 
+    Status divide(const vector<int>& nums, int l ,int r, int n){
 
-    int singleSubArray(vector<int>& nums){
-        int level = 0, n=nums.size(), max;
-        for(int i=0;i<n;i++){
-            level+= nums[i];
-            max = level>max?level:max;
-            if(level<0){
-                level = 0;
-            }
-            
+        if(l==r){
+            return {nums[l], nums[r], nums[l], nums[l]};
         }
-        return max;
+
+        int mid = (l+r)/2;
+
+        Status s1 = divide(nums, l, mid, n);
+        Status s2 = divide(nums, mid+1, r, n);
+        int whole = s1.whole + s2.whole;
+        
+        int mxl = max({s1.l, s2.l+s1.whole, whole ,s1.whole});
+        int mxr = max({s2.r, s1.r+s2.whole, whole, s2.whole});
+        int cross = max({s2.l+s1.whole, s1.r+s2.whole, whole, s1.r+s2.l});
+        int mx = max({s1.mx ,s2.mx, cross});
+        return {mxl, mxr, whole, mx};
+
+
     }
 
-    int maxSubArray(vector<int>& nums) {
-        
+public:
+    int maxSubArray(const vector<int>& nums) {
+
+        int n = nums.size();
+        Status s = divide(nums, 0, n-1, n);
+        return s.mx;
+
     }
 };
 // @lc code=end
 
-// 官方分治解法（差不多想出来了）
-class Solution2 {
-public:
-    struct Status {
-        int lSum, rSum, mSum, iSum;
-    };
 
-    Status pushUp(Status l, Status r) {
-        int iSum = l.iSum + r.iSum;
-        int lSum = max(l.lSum, l.iSum + r.lSum);
-        int rSum = max(r.rSum, r.iSum + l.rSum);
-        int mSum = max(max(l.mSum, r.mSum), l.rSum + r.lSum);
-        return (Status) {lSum, rSum, mSum, iSum};
-    };
+int main(){
 
-    Status get(vector<int> &a, int l, int r) {
-        if (l == r) {
-            return (Status) {a[l], a[l], a[l], a[l]};
-        }
-        int m = (l + r) >> 1;
-        Status lSub = get(a, l, m);
-        Status rSub = get(a, m + 1, r);
-        return pushUp(lSub, rSub);
-    }
+    Solution s;
 
-    int maxSubArray(vector<int>& nums) {
-        return get(nums, 0, nums.size() - 1).mSum;
-    }
-};
+    cout << s.maxSubArray({-2,1,-3,4,-1,2,1,-5,4});
 
+    return 0;
+}
