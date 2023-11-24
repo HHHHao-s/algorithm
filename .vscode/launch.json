@@ -22,6 +22,9 @@
                     "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
+                },
+                {
+                    "text": "set charset UTF-8"
                 }
             ],
             "preLaunchTask": "C/C++: g++.exe build active file"
