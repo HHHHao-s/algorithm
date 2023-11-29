@@ -3,24 +3,40 @@ class Solution {
 public:
     int beautifulSubstrings(string s, int k) {
         
-        vector<int> prefix;
-        unordered_set<char> yuan={'a','e','i','o','u'};
-        int n =s.size();
-        vector<int> len;
-        for(int j=1;j<n;j++){
-            if((j*j)%k==0){
-                len.push_back(2*j);
+        int d=1;
+        for(int d=1;;d++){
+            if((d*d)%(4*k)==0){
+                k=d;
+                break;
             }
         }
-        int cur=0;
-        for(int i=0;i<s.size();i++){
-            if(yuan.count(s[i])){
-                cur++;
+        // 现在要满足总长度能被k整除
+        unordered_map<int,unordered_map<int,int>> mp; // mp[presum][len]
+        int pre=0;
+        int ans=0;
+        int i=0;
+        mp[0][0] =1;
+        for(auto c: s){
+            i++;
+            if(c=='a' || c=='e' || c=='i'|| c=='o' || c=='u'){
+                pre++;
             }else{
-                cur--;
+                pre--;
             }
-            prefix[i]=cur;
+            if(mp.count(pre) && mp[pre].count(i%k)){
+                ans+= mp[pre][i%k];
+            }
+            mp[pre][i%k]++;
+            
         }
+        return ans;
 
     }
 };
+
+int main(){
+    Solution s;
+
+    cout << s.beautifulSubstrings("baeyh", 2);
+    return 0;
+}
