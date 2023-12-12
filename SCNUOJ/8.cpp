@@ -1,5 +1,4 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -8,24 +7,35 @@ int main(){
     int n=4, cap=10;
 
     scanf("%d %d", &n, &cap);
+    vector<long long> W, V;
+    for(int i=0;i<n;i++){
+        long long t;
+        cin >> t;
+        W.push_back(t);
+    }
+    for(int i=0;i<n;i++){
+        long long t;
+        cin >> t;
+        V.push_back(t);
+    }
 
-    int w[4]={7,3,4,5};
-    int v[4]={42,12,40,25};
+    vector<vector<long long>> dp(n+1, vector<long long>(cap+1));
+    // for(int i=W[0];i<=cap;i++){
+    //     dp[1][i] = V[0];
+    // }
 
-    vector<vector<int>> dp(cap+1, vector<int>(n+1));
-    dp[0][0] = 0;
+    for(long long i=1;i<=n;i++){
+        for(long long j=cap;j>=1;j--){
 
-    for(int i=1;i<=cap;i++){
-        for(int j=1;j<=n;j++){
-            int weight = w[j-1];
-            int value = v[j-1];
-            if(weight<=i){
-                dp[i][j] = max(dp[i-weight][j-1]+value, dp[i-1][j]);
+            if(j-W[i-1]>=0){
+                dp[i][j] = max({ dp[i-1][j-W[i-1]]+V[i-1], dp[i-1][j]});
+            }else{
+                dp[i][j] = dp[i-1][j];
             }
         }
     }
 
-    printf("%d", dp[cap][n]);
+    cout << dp[n][cap];
 
     return 0;
 }

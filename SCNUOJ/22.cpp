@@ -17,45 +17,37 @@ class Solution {
 private:
     int min_cost=INT_MAX;
 
+    void backTrace(const vector<int>& price,const vector<vector<int>>& special, vector<int>& needs, int cur ,int cur_price){
 
-    void backTrace(const vector<int>& price,const vector<vector<int>>& special, vector<int>& needs, int cur_cost, int cur_big_i){
-        if(cur_big_i==special.size()){
+        if(cur == special.size()){
             for(int i=0;i<needs.size();i++){
-                cur_cost+=price[i]*needs[i];
+                cur_price+=needs[i]*price[i];
+               
             }
-            min_cost = min(min_cost, cur_cost);
+            min_cost=min(min_cost, cur_price);
             return ;
         }
-        int new_cost = cur_cost;
-        int buy=0;
-        auto tmp_need = needs;
+
+        int i=0;// don't buy at first
         while(1){
-
-            // don't buy the special at first
-            bool con=true;
-            
-            for(int i=0;i<special[cur_big_i].size()-1;i++){
-                int need = needs[i] - special[cur_big_i][i]*buy;
-                if(need>=0){
-                    needs[i] = need;
-                }else{
-                    con=false;
-                    break;
-                }
-            }
-            if(con){
-                if(cur_cost+buy*special[cur_big_i].back()>=min_cost){
-                    // 剪枝
-                    break;
-                }
-                backTrace(price, special, needs, cur_cost+buy*special[cur_big_i].back(), cur_big_i+1);
-                needs = tmp_need;
-                buy++;
-                continue;
-            }else{
-
+            if(cur_price + i*special[cur].back()>min_cost){
                 break;
             }
+            
+            for(int j=0;j<needs.size();j++){
+                if(needs[j]-i*special[cur][j]<0){
+                    return;
+                }
+            }
+            for(int j=0;j<needs.size();j++){
+                needs[j]-=i*special[cur][j];            
+            }
+            backTrace(price, special, needs, cur+1, cur_price+i*special[cur].back());
+            for(int j=0;j<needs.size();j++){
+                needs[j]+=i*special[cur][j];            
+            }
+            i++;
+
         }
 
     }
@@ -63,7 +55,7 @@ private:
 public:
     int shoppingOffers(const vector<int>& price,const vector<vector<int>>& special, vector<int>& needs) {
         
-        backTrace(price, special, needs, 0, 0);
+        backTrace(price, special, needs, 0, 0);        
 
         return min_cost;
 

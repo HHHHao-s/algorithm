@@ -9,25 +9,26 @@ using namespace std;
 class Solution {
 public:
     int maxCoins(vector<int>& nums) {
-        int n = nums.size();
-        vector<vector<int>> dp(n+2, vector<int>(n+2));
-        vector<int> val(n+2);
-        val[0] = val[n + 1] = 1;
-        for (int i = 1; i <= n; i++) {
-            val[i] = nums[i - 1];
-        }
-        for(int i=n-1;i>=0;i--){
-            for(int j=i+2;j<=n+1;j++){
-                
-                for(int k=i+1;k<j;k++){
-                    int tmp = val[i]*val[k]*val[j];
-                    tmp+= dp[i][k] + dp[k][j];
-                    dp[i][j] = max(tmp, dp[i][j]);
-                }
+        
 
+        vector<int> new_num =move(nums);
+        nums.push_back(1);
+        for(int x:new_num){
+            nums.push_back(x);
+        }
+        nums.push_back(1);
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n));
+
+        for(int i=n-3;i>=0;i--){
+            for(int j=i+2;j<n;j++){
+                for(int k=i+1;k<j;k++){
+                    dp[i][j] = max(dp[i][j], dp[i][k]+dp[k][j]+nums[i]*nums[k]*nums[j]);
+                }
             }
         }
-        return dp[0][n+1];
+        return dp[0][n-1];
+        
     }
 };
 
