@@ -69,7 +69,23 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "ranges": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "any": "cpp",
+        "barrier": "cpp",
+        "cfenv": "cpp",
+        "charconv": "cpp",
+        "cinttypes": "cpp",
+        "codecvt": "cpp",
+        "coroutine": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "cuchar": "cpp",
+        "optional": "cpp",
+        "source_location": "cpp",
+        "latch": "cpp",
+        "shared_mutex": "cpp",
+        "syncstream": "cpp",
+        "variant": "cpp"
     },
     "github.copilot.editor.enableAutoCompletions": false
 }
