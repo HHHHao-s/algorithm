@@ -258,10 +258,13 @@ void generateDotFile(const vector<vector<int>> &adjList, const string &filename)
 /*
 
 struct UnionFind{
+    UnionFind() = default;
+
     UnionFind(size_t n): arr(n){
         for(int i=0;i<n;i++){
             arr[i] = {i,1};
         }
+        region = n;
     }
 
     int Find(int x){
@@ -271,8 +274,13 @@ struct UnionFind{
         int fax = Find(x);
         int fay = Find(y);
         if(fax!=fay){
+            if(arr[fax].cnt<arr[fay].cnt){
+                swap(fax, fay);
+            }
+            // 把fay合并到fax
             arr[fax].cnt += arr[fay].cnt;
             arr[fay].fa = fax;
+            region--;
         }
     }
     int& GetCnt(int x){
@@ -283,6 +291,7 @@ struct UnionFind{
         int fa,cnt;
     };
     vector<Info>  arr;
+    int region{0};
 };
 
 
