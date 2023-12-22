@@ -460,3 +460,65 @@ public:
     }
 };
 */
+
+/*
+class Trie{
+public:
+    Trie() = default;
+    Trie(int range_):range(range_) ,sons(range_){
+
+    }
+
+    void insert(string str, int cur=0){
+        if(cur>=str.size()){
+            return;
+        }
+        count++;
+        int pos = str[cur]-'a';
+        if(pos>range){
+            return;
+        }
+        if(sons[pos]==nullptr){
+            sons[pos] =new Trie(range);
+            
+        }
+        if(cur==str.size()-1){
+            sons[pos]->exist=true;
+        }else{
+            sons[pos]->insert(str, cur+1);
+        }
+        
+
+    }
+
+    int find(string str, int cur=0){
+        if(cur>=str.size()){
+            return 0;
+        }
+        int pos = str[cur]-'a';
+        if(pos>range){
+            return;
+        }
+        if(sons[pos]->exist){
+            return 0;
+        }
+        if(sons[pos]!=nullptr){
+            return sons[pos]->find(str, cur+1)+1;
+        }
+        return 0;
+
+    }
+
+    ~Trie(){
+        for(auto t: sons){
+            delete t;
+        }
+    }
+
+private:
+    int range{0};
+    int count{0};
+    bool exist{false};
+    vector<Trie*> sons;
+};
+*/
