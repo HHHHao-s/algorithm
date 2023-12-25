@@ -3,96 +3,74 @@
 class Solution {
 public:
     long long minimumCost(string source, string target, vector<string>& original, vector<string>& changed, vector<int>& cost) {
-        const int INF = INT_MAX>>2;
+        const long long INF = LONG_LONG_MAX -1000000;
 
-        int cn=original.size();
-        
-        unordered_map<string,int> str_mp;
-        int n = source.size();
+        unordered_map<int,unordered_map<string, unordered_map<string, long long>>> mp;
 
-        for(auto &ori: original){
-            if(ori.size()>n){
-                continue;
+        for(int i=0;i<original.size();i++){
+            auto &ori = original[i];
+            auto &cha = changed[i];
+            if(mp[ori.size()][ori].count(cha)){
+                mp[ori.size()][ori][cha] = min(mp[ori.size()][ori][cha], (long long)cost[i]);
+            }else{
+                mp[ori.size()][ori][cha] = cost[i];
             }
-            if(!str_mp.count(ori)){
-                int sz = str_mp.size();
-                str_mp[ori]=sz;
-            }
+            mp[ori.size()][ori][ori] = 0;
+            mp[ori.size()][cha][cha] = 0;
         }
 
-        for(auto &cha: changed){
-            if(cha.size()>n){
-                continue;
-            }
-            if(!str_mp.count(cha)){
-                int sz = str_mp.size();
-                str_mp[cha]=sz;
-            }
 
-        }
-
-        
-        vector<vector<long long>> mp(str_mp.size(),vector<long long>(str_mp.size(),INF)); 
-        for(int i=0;i<str_mp.size();i++){
-            mp[i][i]=0;
-        }   
-        for(int i=0;i<cn;i++){
-            if(!str_mp.count(original[i])||!str_mp.count(changed[i])){
-                continue;
-            }
-
-            mp[str_mp[original[i]]][str_mp[changed[i]]] = min(mp[str_mp[original[i]]][str_mp[changed[i]]], (long long)cost[i]);
-
-        }
-        cn = str_mp.size();
-
-        for(int k=0;k<cn;k++){
-            for(int j=0;j<cn;j++){
-                for(int i=0;i<cn;i++){
-                    if(mp[i][k]!=INF && mp[k][j]!=INF  && mp[i][k]+mp[k][j]<mp[i][j]){
-                        mp[i][j] = mp[i][k]+mp[k][j];
+        for(auto &[sz, strs]:mp){
+            for(auto &s1:strs){
+                auto &str1 = s1.first;
+                for(auto &s2:strs){
+                    for(auto &s3:strs){
+                        if(s2.second.count(str1) && s1.second.count(s3.first)){
+                            if(s2.second.count(s3.first)){
+                                s2.second[s3.first] = min(s2.second[s3.first], s2.second[str1]+s1.second[s3.first]);
+                            }else{
+                                s2.second[s3.first] = s2.second[str1]+s1.second[s3.first];
+                            }
+                            
+                        }
                     }
                 }
             }
-        }   
-        string stmp;
-        string ttmp;
-
-        // for(int i=0;i<n;i++){
-        //     if(source[i]==target[i]){
-        //         continue;
-        //     }
-        //     stmp.push_back(source[i]);
-        //     ttmp.push_back(target[i]);
-        // }
-        // source = stmp;
-        // target = ttmp;
-        // n = stmp.size();
-
-        vector<vector<long long>> dp(n, vector<long long>(n, INF));
-
-        for(int i=n-1;i>=0;i--){
-            for(int j=i;j<n;j++){
-                string subsor = source.substr(i, j-i+1);
-                string subtar = target.substr(i, j-i+1);
-                if(subsor==subtar){
-                    dp[i][j]=0;
-                    if(j<n-1)
-                        dp[i][n-1] = min(dp[i][j]+dp[j+1][n-1], dp[i][n-1]);
+        }
+        vector<long long> memo(source.size()+1, -1);
+        function<long long(int)> dfs = [&](int count)->long long{
+            if(count==0){
+                return 0;
+            }
+            if(memo[count]!=-1){
+                return memo[count];
+            }
+            char c1 = source[count-1];
+            char c2 = target[count-1];
+            long long res = INF;
+            if(c1==c2){
+                res = dfs(count-1);
+            }
+            for(auto &[sz, strs]:mp){
+                if(count-sz<0){
+                    continue;
                 }
-                if(str_mp.count(subsor) && str_mp.count(subtar)){
-                    long long cst = mp[str_mp[subsor]][str_mp[subtar]];
-                    
-                    dp[i][j] = min(dp[i][j], cst);
-                    if(j<n-1)
-                        dp[i][n-1] = min(dp[i][j]+dp[j+1][n-1], dp[i][n-1]);
+                auto sour = source.substr(count-sz, sz);
+                auto targ = target.substr(count-sz, sz);
+                if(strs.count(sour) && strs[sour].count(targ)){
+                    long long tmp = dfs(count-sz);
+                    if(strs[sour][targ]>LONG_LONG_MAX-tmp){
+                        continue;
+                    }
+                    res = min(res, strs[sour][targ] + tmp);
                 }
             }
-        }
-        if(dp[0][n-1]==INF){
-            return -1;
-        }
-        return dp[0][n-1];
+            memo[count] = res;
+            return res;
+
+        };
+        long long ans = dfs(source.size());
+        return ans<INF?ans:-1;
 
 
     
