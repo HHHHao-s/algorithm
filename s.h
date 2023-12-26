@@ -296,7 +296,7 @@ struct UnionFind{
 
 */
 /*
-// 顺序生成回文数，一共109998个
+// 顺序生成回文数，一共10999个（包括哨兵）
 vector<int> pal;
 
 auto init = [] {
@@ -325,7 +325,38 @@ auto init = [] {
     return 0;
 }();
 
+// 顺序生成回文数，一共109999个（包括哨兵）
+vector<long long> pal;
+
+auto init = [] {
+    // 严格按顺序从小到大生成所有回文数（不用字符串转换）
+    for (long long base = 1; base <= 100000; base *= 10) {
+        // 生成奇数长度回文数
+        for (long long i = base; i < base * 10; i++) {
+            long long x = i;
+            for (int t = i / 10; t; t /= 10) {
+                x = x * 10 + t % 10;
+            }
+            pal.push_back(x);
+        }
+        // 生成偶数长度回文数
+        if (base <= 10000) {
+            for (long long i = base; i < base * 10; i++) {
+                long long x = i;
+                for (long long t = i; t; t /= 10) {
+                    x = x * 10 + t % 10;
+                }
+                pal.push_back(x);
+            }
+        }
+    }
+    
+
+    pal.push_back(100000000001); // 哨兵，防止下面代码中的 i 下标越界
+}
 */
+
+
 
 /*
 
