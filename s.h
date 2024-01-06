@@ -495,48 +495,22 @@ public:
 /*
 class Trie{
 public:
-    Trie() = default;
+    Trie() = delete;
     Trie(int range_):range(range_) ,sons(range_){
 
     }
 
-    void insert(string str, int cur=0){
-        if(cur>=str.size()){
-            return;
+    void insert(const string& str){
+        Trie *cur = this;
+        for(char c: str){
+            if(cur->sons[c-'a']==nullptr){
+                cur->sons[c-'a'] = new Trie(range);
+            }
+            cur = cur->sons[c-'a'];
+
         }
-        count++;
-        int pos = str[cur]-'a';
-        if(pos>range){
-            return;
-        }
-        if(sons[pos]==nullptr){
-            sons[pos] =new Trie(range);
-            
-        }
-        if(cur==str.size()-1){
-            sons[pos]->exist=true;
-        }else{
-            sons[pos]->insert(str, cur+1);
-        }
+        cur->count++;
         
-
-    }
-
-    int find(string str, int cur=0){
-        if(cur>=str.size()){
-            return 0;
-        }
-        int pos = str[cur]-'a';
-        if(pos>range){
-            return;
-        }
-        if(sons[pos]->exist){
-            return 0;
-        }
-        if(sons[pos]!=nullptr){
-            return sons[pos]->find(str, cur+1)+1;
-        }
-        return 0;
 
     }
 
@@ -549,7 +523,6 @@ public:
 private:
     int range{0};
     int count{0};
-    bool exist{false};
     vector<Trie*> sons;
 };
 */
