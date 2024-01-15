@@ -26,7 +26,7 @@ public:
                 }
             }
         }
-
+        // {x,y,mask}
         queue<tuple<int, int, int>> q;
         vector<vector<vector<int>>> dist(m, vector<vector<int>>(n, vector<int>(1 << key_to_idx.size(), -1)));
         q.emplace(sx, sy, 0);
