@@ -410,6 +410,7 @@ public:
         for(;index<info.size();index += (index&(-index))){
             info[index] += delta;
         
+        }
     }
     // left==-1 会直接返回0
     int query(int index){
