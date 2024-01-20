@@ -403,6 +403,15 @@ public:
             }
         }
     }
+    
+    void increase(int index, int delta){
+        nums[index]+=delta;
+        index++;
+        for(;index<info.size();index += (index&(-index))){
+            info[index] += delta;
+        
+        }
+    }
     void update(int index, int val){
         int delta = val-nums[index];
         nums[index] = val;
@@ -412,7 +421,7 @@ public:
         
         }
     }
-    // left==-1 会直接返回0
+    // left==-1 会直接返回0 [0,index]
     int query(int index){
         int ret =0;
         index++;
@@ -421,7 +430,8 @@ public:
         }
         return ret;
     }
-    int queryRange(int left, int right){ //[left, right]
+    //[left, right]
+    int queryRange(int left, int right){ 
         
         return query(right)- query(left-1);
         
