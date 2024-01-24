@@ -557,3 +557,10 @@ function<int(int, int, bool, bool)> f = [&](int i, int mask, bool is_limit, bool
     return res;
 };
 */
+
+/*
+
+for(int x=mask;x;x=(x-1)&mask){ // 求子集
+    cout << x;
+}
+*/
