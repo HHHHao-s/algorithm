@@ -258,7 +258,7 @@ void generateDotFile(const vector<vector<int>> &adjList, const string &filename)
 /*
 
 struct UnionFind{
-    UnionFind() = default;
+    UnionFind() = delete;
 
     UnionFind(size_t n): arr(n){
         for(int i=0;i<n;i++){
