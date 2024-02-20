@@ -10,51 +10,32 @@
 class Solution
 {
 public:
-    TreeNode *buildTree(const vector<int> &preorder, const vector<int> &inorder)
+    TreeNode *buildTree(const vector<int> &preorder,const vector<int> &inorder)
     {
-        if (preorder.size() == 0)
-            return nullptr;
-        stack<TreeNode *> st;
-        TreeNode *pre_head = new TreeNode();
-        TreeNode *p = pre_head;
-        int pre = 0, in = 0;
+        
 
-        while (pre < preorder.size() && in < inorder.size())
-        {
-            p->left = new TreeNode(preorder[pre++]);
-            p = p->left;
-            st.push(p);
-            while (p->val == inorder[in] && pre<preorder.size())
-            {
-                while (in < inorder.size())
-                {
-                    TreeNode *top = st.top();
-                    if (top->val != inorder[in])
-                    {
-                        p->right = new TreeNode(preorder[pre++]);
-                        p = p->right;
-                        st.push(p);
-                        break;
-                    }
-                    else
-                    {
-                        p=top;
-                        st.pop();
-                        in++;
-                        if (st.empty())
-                        {
-
-                            p->right = new TreeNode(preorder[pre++]);
-                            p = p->right;
-                            st.push(p);
-                            break;
-                        }
-                    }
-                }
-            }
+        unordered_map<int,int> mp;
+        for(int i=0;i<inorder.size();i++){
+            mp[inorder[i]] = i;
         }
 
-        return pre_head->left;
+        function<TreeNode*(int , int , int )> build =[&](int index, int l, int r){
+            if(l==r){
+                return new TreeNode(preorder[index]);
+            }else if(l>r){
+                TreeNode *ret = nullptr;
+                return ret;
+            }
+            TreeNode *root = new TreeNode(preorder[index]);
+            int mid = mp[root->val];
+            root->left = build(index+1, l, mid-1);
+            root->right = build(index+ mid-l+1, mid+1, r);
+            return root;
+
+        };
+
+        return build(0,0,inorder.size()-1);
+
     }
 };
 // @lc code=end
@@ -63,7 +44,7 @@ int main()
 
     Solution sl;
 
-    printTree(sl.buildTree({3,1,2,4}, {1,2,3,4}));
+    printTree(sl.buildTree({1,2}, {2,1}));
 
     return 0;
 }
