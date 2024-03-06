@@ -1,16 +1,48 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
+#include "s.h"
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        
+        int n1=  nums1.size();
+        int n2 = nums2.size();
+        if(n1>n2){
+            return findMedianSortedArrays(nums2, nums1);
+        }
 
-using    namespace std;
+        int left = 0, right = n1;
+        int need = (n1+n2)/2;
+        while(left<=right){
+            int mid1 = (right+left)/2;
+            int mid2 = need-mid1;
 
-int main() {
-    uint64_t a = 0x8070605040302010;
-    // 10 20 30 40 50 60 70 80
-    char *p = (char *)&a;
-    uint16_t *p16 = (uint16_t*)(p+1);
+            int a = mid1-1>=0 ?nums1[mid1-1]: INT_MIN;
+            int b = mid1<n1?nums1[mid1]:INT_MAX;
+            int c = mid2-1>=0 ? nums2[mid2-1]:INT_MIN;
+            int d = mid2<n2 ? nums2[mid2]: INT_MAX;
 
-    printf("0x%x", *(p16+2));
-    return 0;
+            if(a<=d && c<=b){
+                if((n1+n2)%2==0){
+                    return ((double)max(a,c)+(double)min(b,d))/2;
+                }else{
+                    return (double)min(b,d);
+                }
+                
+            }else if(a>d){
+                right=mid1-1;
+
+            }else if(c>b){
+                left = mid1+1;
+            }
+
+        }
+
+        return -1;
+
+    }
+};
+
+int main(){
+    Solution s;
+    vector<int > nums1, nums2;
+    cout << s.findMedianSortedArrays(nums1 , nums2);
 }
