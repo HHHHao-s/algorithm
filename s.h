@@ -564,3 +564,17 @@ for(int x=mask;x;x=(x-1)&mask){ // 求子集
     cout << x;
 }
 */
+
+/*
+// 对 x 分解质因数
+set<int> primes;
+for(int j=2;j*j<=x;j++){
+    while(x%j==0){
+        x/=j;
+        primes.insert(j)
+    }
+}
+if(x>1){
+    primes.insert(j);
+}
+*/
