@@ -1,6 +1,5 @@
 *.bat
 *.exe
-exes
 output
 *.txt
 test.cpp

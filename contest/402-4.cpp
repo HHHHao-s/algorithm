@@ -1,4 +1,6 @@
-#include "s.h"
+#include "../s.h"
+
+
 class BITree{
 public:
     BITree(const vector<int>& in_nums):nums(in_nums),info(in_nums.size()+1) {
@@ -111,10 +113,3 @@ public:
 
     }
 };
-
-int main(){
-    Solution s;
-    vector<int> nums = {3,1,4,2,5};
-    vector<vector<int>> q ={{2,3,6}, {1,0,4}};
-    printArr(s.countOfPeaks(nums, q));
-}
