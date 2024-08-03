@@ -12,7 +12,7 @@
                 "--input-charset=UTF-8",
                 "${file}",
                 "-o",
-                "${fileDirname}\\exes\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\exes\\a.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"
