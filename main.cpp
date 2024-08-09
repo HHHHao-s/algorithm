@@ -1,120 +1,48 @@
-#include "s.h"
-class BITree{
-public:
-    BITree(const vector<int>& in_nums):nums(in_nums),info(in_nums.size()+1) {
-        for (int i = 1; i <= in_nums.size(); i++) {
-            info[i] += in_nums[i - 1];
-            int nxt = i + (i & -i); // 下一个关键区间的右端点
-            if (nxt <= in_nums.size()) {
-                info[nxt] += info[i];
-            }
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    int n ,m;
+    cin >> n >> m;
+
+    vector<vector<int>> grid(n, vector<int>(m, 0));
+
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            int t;
+            cin >>t;
+            grid[i][j] = t;
         }
     }
-    
-    void increase(int index, int delta){
-        nums[index]+=delta;
-        index++;
-        for(;index<info.size();index += (index&(-index))){
-            info[index] += delta;
-        
+    vector<int > dp(1<<m, 0);
+    for(int l=0;l<n;l++){
+        vector<int> got(1<<m);
+        for(int i=0;i<m;i++){
+            got[(1<<i)] = grid[l][i];
         }
-    }
-    void update(int index, int val){
-        int delta = val-nums[index];
-        nums[index] = val;
-        index++;
-        for(;index<info.size();index += (index&(-index))){
-            info[index] += delta;
-        
+        for(int i = 1;i<(1<<m);i++){
+            
+            got[i] = got[(i^(i&(-i)))] + got[i&(-i)];
         }
-    }
-    // left==-1 会直接返回0 [0,index]
-    int query(int index){
-        int ret =0;
-        index++;
-        for(;index>0;index-=(index&(-index))){
-            ret += info[index];
-        }
-        return ret;
-    }
-    //[left, right]
-    int queryRange(int left, int right){ 
-        
-        return query(right)- query(left-1);
-        
-    }
-private:
-    vector<int> nums;
-    vector<int> info;
-    int n;
-};
+        vector<int> tmp_dp(1<<m ,0);
 
-
-class Solution {
-public:
-    vector<int> countOfPeaks(vector<int>& nums, vector<vector<int>>& queries) {
-
-        vector<int> ret;
-
-        vector<int> is(nums.size());
-        for(int i=1;i<is.size()-1;i++){
-
-            if(nums[i-1]< nums[i] && nums[i] > nums[i+1]){
-                is[i] = 1;
+        for(int i=1;i<(1<<m);i++){
+            int reverse = ((i<<1) | (i>>1)) &((1<<m)-1);
+            for(int j=0;j<(1<<m);j++){
+                if((j&reverse)==0)
+                    tmp_dp[i] = max(tmp_dp[i], got[i] + dp[j]);
             }
 
         }
-
-        BITree b(is);
-
-        for(auto q: queries){
-
-            int a = q[0];
-            int l = q[1];
-            int r = q[2];
-            if(a==1){
-                if(l+1 <= r-1){
-                    ret.push_back(b.queryRange(l+1, r-1));
-                }else{
-                    ret.push_back(0);
-                }
-                
-            }else{
-                nums[l] = r;
-                if(l>0 && l<is.size()-1){
-                    if(nums[l] >nums[l-1] && nums[l]> nums[l+1]){
-                        b.update(l, 1);
-                    }else{
-                        b.update(l, 0);
-                    }
-                }
-                l = l-1;
-                if(l>0 && l<is.size()-1){
-                    if(nums[l] >nums[l-1] && nums[l]> nums[l+1]){
-                        b.update(l, 1);
-                    }else{
-                        b.update(l, 0);
-                    }
-                }
-                l=l+2;
-                if(l>0 && l<is.size()-1){
-                    if(nums[l] >nums[l-1] && nums[l]> nums[l+1]){
-                        b.update(l, 1);
-                    }else{
-                        b.update(l, 0);
-                    }
-                }
-            }
-        }
-        return ret;
-
+        dp = tmp_dp;
 
     }
-};
+    int ret= 0;
+    for(int i=0;i<(1<<m);i++){
+        ret = max(dp[i], ret);
+    }
+    cout << ret;
 
-int main(){
-    Solution s;
-    vector<int> nums = {3,1,4,2,5};
-    vector<vector<int>> q ={{2,3,6}, {1,0,4}};
-    printArr(s.countOfPeaks(nums, q));
 }
+// 64 位输出请用 printf("%lld")
