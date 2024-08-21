@@ -1,41 +1,56 @@
-#include <vector>
-#include <string>
 #include <iostream>
+#include <vector>
 #include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <algorithm>
-#include <queue>
+#include <deque>
+
 using namespace std;
 
-int main() {
-    
-    int N;
+/*
 
-    map<int, vector<pair<int,int>>> m;
 
-    for(int i=0;i<N;i++){
-        int P,X,D;
-        cin >> P >> X >>D;
 
-        m[X].push_back({P, D});
+
+*/
+
+struct X{
+
+    X(int data){
+        pa = new int;
+        *pa = data;
     }
 
-    priority_queue<tuple<int,int,int>> pq;
+    X(const X& rhs) {
+        pa = rhs.pa;
+    }
 
-    for(const auto& [day, infos]: m){
-        int cur= day;
-        while(!pq.empty()){
-            auto [p, x,d] = pq.top();
-        }
+    X(X&& rhs) noexcept{
+        
+        pa = new int;
+        *pa = *rhs.pa;
+        cout << pa << ' ' << endl;
+    }
 
-        
-        
-        
-        
+    ~X(){
+        delete pa;
+    }
 
+
+int *pa;
+
+};
+
+
+
+
+
+int main()
+{
+    vector<X> arr;
+
+    for(int i=0;i<3;i++){
+        
+        arr.emplace_back(i);
     }
 
 
 }
-// 64 位输出请用 printf("%lld")
