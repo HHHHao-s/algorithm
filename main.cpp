@@ -1,91 +1,30 @@
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <map>
+#include <cmath>
 using namespace std;
 
-struct Node{
-int val;
-struct  Node *next;
-};
 
-Node *gen(vector<int> nums){
-
-    Node *ret = new Node;
-    Node *next = ret;
-
-    for(int num:nums){
-
-        Node *newn = new Node;
-        newn->val = num;
-        next ->next = newn;
-        next=next->next;
-
-    }
-    return ret->next;
-
+double f(double x){
+    return x*x-1;
 }
 
+double ff(double x){
+    return 2*x;
+}
 
 int main() {
     
-    vector<int> a1 = {1,3,5,7};
-    vector<int> a2 = {2,4,6,8};
-
-
-
-
-    vector<Node*> ls{gen(a1), gen(a2)};
-
-    map<int, deque<Node*>> m;
-
-    
-
-    Node * ret=new Node;
-    Node * last=nullptr;
-
-    ret = last;
-    int i=0;
-    for(auto p: ls){
-
-        m[p->val].push_back(p);
-
-    }
-
-    while(!m.empty()){
-
-        auto p = m.begin()->second.front();
-        m.begin()->second.pop_front();
-        if(m.begin()->second.empty()){
-            
-            m.erase(m.begin()->first);
-        }
-        if(p->next!=nullptr){
-            m[p->next->val].push_back(p->next);
-        }
-        p->next = nullptr;
-        last->next = p;
-        last = last->next;
-        
-        
+    double x1 = 10;
+    double x2 = 10;
+    do{
+        x1 =x2;
+        x2=x1 - f(x1)/ff(x1);
         
 
-    }
+    }while(abs(x1-x2)>1e-5);
 
-    for(auto p =ret->next; p!=nullptr;p=p->next){
-        cout << p->val << ' ';
-    }
+    cout << x1;
 
 
 }
-/*
-const int* ptr
-int* const ptr
-
-unique
-shared
-weak
-
-shared_prt<int> a = b;
-
-*/
