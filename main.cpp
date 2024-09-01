@@ -2,29 +2,39 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include <unordered_map>
+#include <unordered_set>
+#include <queue>
+#include <set>
+#include <algorithm>
+
 using namespace std;
 
-
-double f(double x){
-    return x*x-1;
-}
-
-double ff(double x){
-    return 2*x;
-}
-
 int main() {
-    
-    double x1 = 10;
-    double x2 = 10;
-    do{
-        x1 =x2;
-        x2=x1 - f(x1)/ff(x1);
-        
+    int n;
+    cin >> n;
 
-    }while(abs(x1-x2)>1e-5);
+    vector<int> arr(n+1);
+    for(int i=1;i<=n;i++){
+        arr[i] = i;
+    }
 
-    cout << x1;
+    for(int i=1;i<=n/2;i++){
+        auto tmp = arr;
+        int last = 0;
+        for(int j=i;j<=n;j+=i){
 
+            arr[j] = tmp[(j-i+n)%n];
+            last = j;
+        }
+        arr[i] = tmp[last];
+
+    }
+
+    for(int i=1;i<=n;i++){
+
+        cout << arr[i] << ' ';
+
+    }
 
 }
