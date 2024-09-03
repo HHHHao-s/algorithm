@@ -7,34 +7,46 @@
 #include <queue>
 #include <set>
 #include <algorithm>
+#include <future>
+#include <thread> // 包含sleep_for
+#include <chrono> // 包含chrono_literals
 
-using namespace std;
+std::promise<void> p;
+
+void react(){
+    std::cout << "react" << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(1)); // 休眠1秒
+}
+
+
+
+void f(){
+
+
+
+    std::thread t([](){
+        p.get_future().wait();
+        react();
+    });
+
+
+    throw std::runtime_error("An error occurred in react"); // 抛出异常
+
+    p.set_value();
+
+
+    if(t.joinable()){
+        t.join();
+    }
+}
 
 int main() {
-    int n;
-    cin >> n;
 
-    vector<int> arr(n+1);
-    for(int i=1;i<=n;i++){
-        arr[i] = i;
+    try {
+        f();
+    } catch (const std::exception& e) {
+        std::cerr << "Exception caught in main: " << e.what() << std::endl;
     }
-
-    for(int i=1;i<=n/2;i++){
-        auto tmp = arr;
-        int last = 0;
-        for(int j=i;j<=n;j+=i){
-
-            arr[j] = tmp[(j-i+n)%n];
-            last = j;
-        }
-        arr[i] = tmp[last];
-
-    }
-
-    for(int i=1;i<=n;i++){
-
-        cout << arr[i] << ' ';
-
-    }
+    return 0;
 
 }

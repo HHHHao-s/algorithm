@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.html": "html",
         "streambuf": "cpp",
         "unordered_set": "cpp",
         "stdexcept": "cpp",
@@ -85,7 +86,8 @@
         "latch": "cpp",
         "shared_mutex": "cpp",
         "syncstream": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "queue": "cpp"
     },
     "github.copilot.editor.enableAutoCompletions": false
 }
