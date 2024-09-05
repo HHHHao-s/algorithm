@@ -11,42 +11,62 @@
 #include <thread> // 包含sleep_for
 #include <chrono> // 包含chrono_literals
 
-std::promise<void> p;
+using namespace std;
+class A{
 
-void react(){
-    std::cout << "react" << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(1)); // 休眠1秒
+public:
+    A(){
+        cout << "default" << endl;
+    }
+
+    A(int x) : data(x){
+        cout << "x=" << x << endl;
+    }
+
+    A(const A& other){
+        cout << "copy" << endl;
+        data=  other.data;
+
+    }
+
+    A(A&& other){
+        cout << "move" << endl;
+        data = other.data;
+    }
+
+
+    ~A(){
+
+    }
+
+   
+private:
+    int data;
+
+};
+
+A f(A a){
+
+    cout<< "f" << endl;
+
+
+    return a;
+
 }
 
+A f(){
+    A a(2);
+    cout<< "f" << endl;
 
 
-void f(){
+    return a;
 
-
-
-    std::thread t([](){
-        p.get_future().wait();
-        react();
-    });
-
-
-    throw std::runtime_error("An error occurred in react"); // 抛出异常
-
-    p.set_value();
-
-
-    if(t.joinable()){
-        t.join();
-    }
 }
 
 int main() {
 
-    try {
-        f();
-    } catch (const std::exception& e) {
-        std::cerr << "Exception caught in main: " << e.what() << std::endl;
-    }
-    return 0;
+    A tmp = f({1});
+
+    A tmp2 = f();
 
 }
