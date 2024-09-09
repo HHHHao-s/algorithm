@@ -8,6 +8,6 @@ while 1:
     # Step 2: Replace all occurrences of [] with {}
     modified_data = input_data.replace('[', '{')
     modified_data = modified_data.replace(']', '}')
-
+    modified_data = modified_data.replace('\n', ';')
     # Step 3: Print the modified input
     print(modified_data)
