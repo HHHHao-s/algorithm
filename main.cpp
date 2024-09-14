@@ -13,89 +13,67 @@
 
 using namespace std;
 
-int f(long long x){
-    int r = 0;
-    for(int i=0;i<63;i++){
-        if(x & (1ll<<i)){
-            r++;
+
+
+class Solution {
+public:
+    /**
+     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+     *
+     * 给定的5张牌是否是顺子
+     * @param nums int整型vector 扑克牌对应的数字集合
+     * @return bool布尔型
+     */
+    bool isStraight(vector<int>& nums) {
+        // write code here
+        int ghost= 0;
+        int a = 0;
+        vector<int> each(15);
+
+
+        for(int i=0;i<nums.size();i++){
+            ghost += nums[i]==0;
+            each[nums[i]]=1;
         }
-    }
+       
+        for(int i=2;i<=10;i++){
+            
+            if(each[i]==1){
+                int cnt= 0;
+                for(int j=i;j<=i+4;j++){
+                    if(j==14){
+                        if(each[1]){
+                            cnt++;
+                        }
+                        break;
+                    }
+                    if(each[j]){
+                        cnt++;
+                    }
 
-    return r;
-}
-
-long long g(long long x){
-    long long ret =x;
-    int stage = 0;
-    int cnt= 0;
-    for(int i=0;i<63;i++){
-
-        if(x & (1ll<<i)){
-            if(stage==0){
-                stage=1;
-            }else{
-                cnt++;
-            }
-        }else{
-            if(stage==1){
-                ret &= ~((1ll<<i)-1);
-                ret |= 1ll << i;
-                for(int j=0;j<cnt;j++){
-                    ret |= 1ll << j;
                 }
-
+                if(cnt + ghost==5){
+                    return true;
+                }
                 break;
+
             }
         }
+        if(each[1]==1){
+            int cnt= 0;
+            for(int j=1;j<=5;j++){
+                cnt+= each[j];
 
-    }
-    return ret;
-
-}
-
-int main() {
-
-    int n;
-    cin >> n;
-    vector<long long> arr(n);
-    vector<set<long long>> each(63);
-    for(int i=0;i<n;i++){
-        cin >>arr[i];
-        each[f(arr[i])].insert(arr[i]);
-    }
-    int mx = 0;
-    for(int i=1;i<63;i++){
-        if(each[i].size()<=mx){
-            continue;
-        }
-        int tmp=1;
-        for(auto l=each[i].begin();l!=each[i].end();){
-            auto r = l;
-            r++;
-            int sz = 1;
-            while(r!=each[i].end()){
-                auto last = r;
-                last--;
-
-                long long lv = *last;
-                long long rv = *r;
-
-                if(g(lv)==rv){
-                    r++;
-                    sz++;
-                    tmp = max(tmp, sz);
-                }else{
-
-                    break;
-                }
             }
-            l=r;
-            tmp = max(tmp, sz);
+            if(cnt + ghost==5){
+                return true;
+            }
         }
-        mx = max(tmp,mx);
+       
+        return false;
+
+
     }
-    cout << mx;
+};
 
 
-
-}
