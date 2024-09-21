@@ -10,70 +10,92 @@
 #include <future>
 #include <thread> // 包含sleep_for
 #include <chrono> // 包含chrono_literals
-
+#include <deque>
+#include <time.h>
+#include <random>
 using namespace std;
 
 
+  struct TreeNode {
+ 	int val;
+ 	struct TreeNode *left;
+ 	struct TreeNode *right;
+ 	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+  };
 
 class Solution {
 public:
     /**
      * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
      *
-     * 给定的5张牌是否是顺子
-     * @param nums int整型vector 扑克牌对应的数字集合
-     * @return bool布尔型
+     * 判断二叉树是否为规整二叉树
+     * @param root TreeNode类 二叉树根节点
+     * @return string字符串
      */
-    bool isStraight(vector<int>& nums) {
-        // write code here
-        int ghost= 0;
-        int a = 0;
-        vector<int> each(15);
 
+    bool dfs(TreeNode* l ,TreeNode* r){
 
-        for(int i=0;i<nums.size();i++){
-            ghost += nums[i]==0;
-            each[nums[i]]=1;
+        if(l->val!=r->val){
+            return false;
         }
-       
-        for(int i=2;i<=10;i++){
+        bool ret = 1;
+        if(l->left==nullptr && l->right == nullptr && r->left==nullptr && r->right==nullptr){
+            return true;
+        }
+        if((r->left &&( l->right==nullptr)) 
+            || (r->right && (l->left==nullptr))
+            || (l->left && (r->right==nullptr))
+            || (l->right && (r->left == nullptr))){
+            return false;
+        }
+        if(l->left && r->right){            
+            if(! dfs(l->left, r->right)){
+                return false;
+            }  
             
-            if(each[i]==1){
-                int cnt= 0;
-                for(int j=i;j<=i+4;j++){
-                    if(j==14){
-                        if(each[1]){
-                            cnt++;
-                        }
-                        break;
-                    }
-                    if(each[j]){
-                        cnt++;
-                    }
-
-                }
-                if(cnt + ghost==5){
-                    return true;
-                }
-                break;
-
+        }
+        if(l->right && r->left){
+            if( !dfs(l->right, r->left)){
+                return false;
             }
         }
-        if(each[1]==1){
-            int cnt= 0;
-            for(int j=1;j<=5;j++){
-                cnt+= each[j];
+        
+        return true;
 
-            }
-            if(cnt + ghost==5){
-                return true;
+
+    }
+
+    string is_symmetric_tree(TreeNode* root) {
+        // write code here
+        
+
+        if(root->left==nullptr && root->right==nullptr){
+            return "yes";
+        }
+
+        if(root->left && root->right){
+            bool ret = dfs(root->left, root->right);
+            if(ret){
+                return "yes";
+            }else{
+                return "no";
             }
         }
-       
-        return false;
+        
+
+        return "no";
 
 
     }
 };
+
+
+int main(){
+
+    
+
+}
+
+
 
 
