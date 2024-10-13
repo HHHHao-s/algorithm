@@ -441,6 +441,57 @@ private:
     vector<int> info;
     int n;
 };
+
+
+class BITree{
+public:
+    BITree(const vector<long long>& in_nums):nums(in_nums),info(in_nums.size()+1) {
+        for (long long i = 1; i <= in_nums.size(); i++) {
+            info[i] += in_nums[i - 1];
+            long long nxt = i + (i & -i); // 下一个关键区间的右端点
+            if (nxt <= in_nums.size()) {
+                info[nxt] += info[i];
+            }
+        }
+    }
+    
+    void increase(long long index, long long delta){
+        nums[index]+=delta;
+        index++;
+        for(;index<info.size();index += (index&(-index))){
+            info[index] += delta;
+        
+        }
+    }
+    void update(long long index, long long val){
+        long long delta = val-nums[index];
+        nums[index] = val;
+        index++;
+        for(;index<info.size();index += (index&(-index))){
+            info[index] += delta;
+        
+        }
+    }
+    // left==-1 会直接返回0 [0,index]
+    long long query(long long index){
+        long long ret =0;
+        index++;
+        for(;index>0;index-=(index&(-index))){
+            ret += info[index];
+        }
+        return ret;
+    }
+    //[left, right]
+    long long queryRange(long long left, long long right){ 
+        
+        return query(right)- query(left-1);
+        
+    }
+private:
+    vector<long long> nums;
+    vector<long long> info;
+    long long n;
+};
 */
 
 /*
