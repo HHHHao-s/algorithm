@@ -190,7 +190,6 @@ void printTree(TreeNode *root)
 template <typename T>
 void print2d(const vector<vector<T>> nums)
 {
-    cout << "[";
 
     if (nums.size() > 0)
     {
@@ -204,12 +203,12 @@ void print2d(const vector<vector<T>> nums)
         {
             cout << "," << nums[0][j];
         }
-        cout << "]";
+        cout << "]" << endl;
     }
 
     for (int i = 1; i < nums.size(); i++)
     {
-        cout << ",[";
+        cout << "[";
         if (nums[i].size() > 0)
         {
             cout << nums[i][0];
@@ -219,9 +218,9 @@ void print2d(const vector<vector<T>> nums)
         {
             cout << "," << nums[i][j];
         }
-        cout << "]";
+        cout << "]" << endl;
     }
-    cout << "]";
+
 }
 
 template <typename T>
