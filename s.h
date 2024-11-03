@@ -643,3 +643,13 @@ long long power(long long base, long long exp, long long mod) {
 }
 
 */
+/*
+struct Nd{
+    int x, y ,d, s;
+
+    bool operator<(const Nd& rhs){
+        return d< rhs.d;
+    }
+};
+
+*/
