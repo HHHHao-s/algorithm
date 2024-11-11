@@ -8,41 +8,39 @@
 // @lc code=start
 class Solution {
 private:
-    int ans;
-    unordered_map<int, unordered_map<int,unordered_map<int,int>>> memo;
-    int hash1(int li ,int ri){
-        return li*100+ri;
-    }
     
-
-    int cut(int l, int r, vector<int> &cuts, int li, int ri){
-        if(li>ri){
-            return 0;
-        }
-        if(li==ri){
-            return r-l;
-        }
-        if(memo[hash1(li,ri)][l].count(r)){
-            return memo[hash1(li,ri)][l][r];
-        }
-
-        int ret=INT_MAX;
-        for(int i=li;i<=ri;i++){
-            int nc = cuts[i];
-            int left = cut(l, nc, cuts, li, i-1);
-
-            int right = cut(nc, r, cuts, i+1, ri);
-
-            ret = min(ret,r-l+ left+right);
-        }
-        memo[hash1(li,ri)][l][r]=ret;
-        return ret;  
-    }
 
 public:
     int minCost(int n, vector<int>& cuts) {
         sort(cuts.begin(),cuts.end());
-        return cut(0,n,cuts, 0, cuts.size()-1);
+        unordered_map<int ,unordered_map<int,int> > f;
+
+        auto dfs=[&](auto &&dfs, int l ,int r){
+
+            if(l<r && f[l].count(r)){
+                return f[l][r];
+            }
+            if(l>=r){
+                return 0;
+            }
+            int ans= INT_MAX ;
+            auto it = upper_bound(cuts.begin(), cuts.end(), l);
+            for(;it!=cuts.end() && *it<r; it++){
+
+                ans = min(ans, dfs(dfs, l, *it)+dfs(dfs, *it, r)+r-l);
+
+            }
+            if(ans==INT_MAX){
+                ans = 0;
+            }
+            cout << l << ' ' << r << ' ' << ans << endl;
+
+            f[l][r] = ans;
+            return ans;
+
+        };
+
+        return dfs(dfs, 0, n);
 
     }
 };
@@ -51,5 +49,5 @@ public:
 int main(){
     Solution s;
     vector<int> cuts = {1,3,4,5};
-    cout << s.minCost(7, cuts);
+    cout << s.minCost(9, cuts);
 }
