@@ -54,7 +54,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #endif
-
+#include <ranges>
 using namespace std;
 
 #define null INT64_MIN
